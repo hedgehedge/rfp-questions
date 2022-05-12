@@ -1,3 +1,6 @@
+using rfp_questions_service.apiclient;
+using rfp_questions_service.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -18,6 +21,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.Configure<OpenSearchConfig>(
+    builder.Configuration.GetSection(OpenSearchConfig.ConfigSection));
+
+builder.Services.AddSingleton<IOpenSearchApiClient, OpenSearchApiClient>();
+builder.Services.AddHttpClient("OpenSearchClient");
 
 var app = builder.Build();
 
