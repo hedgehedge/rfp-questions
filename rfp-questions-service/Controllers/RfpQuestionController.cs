@@ -7,12 +7,16 @@ namespace rfp_questions_service.Controllers
     [Route("[controller]")]
     public class RfpQuestionController : ControllerBase
     {
+        private readonly IOpenSearchApiClient _openSearchApiClient;
+        public RfpQuestionController(IOpenSearchApiClient openSearchApiClient)
+        {
+            _openSearchApiClient = openSearchApiClient;
+        }
+
         [HttpGet(Name = "GetRfpDetail")]
         public async Task<IActionResult> GetRfpDetail([FromQuery] string searchVal)
         {
-            OpenSearchApiClient openSearchApiClient = new OpenSearchApiClient();
-
-            var result = await openSearchApiClient.Search(searchVal);
+            var result = await _openSearchApiClient.Search(searchVal);
             
             return Ok(result);
         }
